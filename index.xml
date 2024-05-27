@@ -16,25 +16,11 @@
       <description>Hello World!&#xA;Section curl ifconfig.me Sub Section smeee</description>
     </item>
     <item>
-      <title>Blüdhaven</title>
-      <link>https://cakrome.github.io/projects/bludhaven/</link>
+      <title>cpython-docker</title>
+      <link>https://cakrome.github.io/projects/cpython-docker/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://cakrome.github.io/projects/bludhaven/</guid>
-      <description>History Blüdhaven was a former whaling town, which was officially incorporated as a &amp;ldquo;Commonwealth&amp;rdquo; in 1912. The town had a generally poor socio-economic populace, owing in part to failed efforts to transform itself into a manufacturing and shipping center.</description>
-    </item>
-    <item>
-      <title>Hydra</title>
-      <link>https://cakrome.github.io/projects/hydra/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://cakrome.github.io/projects/hydra/</guid>
-      <description>Motto Cut off one head and two will take their place</description>
-    </item>
-    <item>
-      <title>Tatooine</title>
-      <link>https://cakrome.github.io/projects/tatooine/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://cakrome.github.io/projects/tatooine/</guid>
-      <description>A long time ago in a galaxy far, far away&amp;hellip;. A project was planned, but never completed</description>
+      <guid>https://cakrome.github.io/projects/cpython-docker/</guid>
+      <description>Description Statically linked, relocatable CPython distribution for GNU/Linux.&#xA;Project Source Code https://codeberg.org/cakrome/cpython-docker</description>
     </item>
   </channel>
 </rss>
