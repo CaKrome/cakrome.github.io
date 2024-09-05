@@ -13,14 +13,14 @@
       <link>https://cakrome.github.io/posts/my-first-post/</link>
       <pubDate>Sun, 26 May 2024 15:34:56 -0400</pubDate>
       <guid>https://cakrome.github.io/posts/my-first-post/</guid>
-      <description>Hello World!</description>
+      <description>&lt;p&gt;Hello World!&lt;/p&gt;</description>
     </item>
     <item>
       <title>cpython-docker</title>
       <link>https://cakrome.github.io/projects/cpython-docker/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://cakrome.github.io/projects/cpython-docker/</guid>
-      <description>Description Statically linked, relocatable CPython distribution for GNU/Linux.&#xA;Project Source Code https://codeberg.org/cakrome/cpython-docker</description>
+      <description>&lt;h3 id=&#34;description&#34;&gt;Description&lt;/h3&gt;&#xA;&lt;p&gt;Statically linked, relocatable CPython distribution for GNU/Linux.&lt;/p&gt;&#xA;&lt;h3 id=&#34;project-source-code&#34;&gt;Project Source Code&lt;/h3&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://codeberg.org/cakrome/cpython-docker&#34;&gt;https://codeberg.org/cakrome/cpython-docker&lt;/a&gt;&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
