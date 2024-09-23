@@ -3,12 +3,27 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://cakrome.github.io/</loc>
-    <lastmod>2024-05-26T15:34:56-04:00</lastmod>
+    <lastmod>2024-09-22T22:17:42-04:00</lastmod>
   </url><url>
-    <loc>https://cakrome.github.io/posts/my-first-post/</loc>
-    <lastmod>2024-05-26T15:34:56-04:00</lastmod>
+    <loc>https://cakrome.github.io/tags/devops/</loc>
+    <lastmod>2024-09-22T22:17:42-04:00</lastmod>
+  </url><url>
+    <loc>https://cakrome.github.io/posts/debian-template-proxmox/</loc>
+    <lastmod>2024-09-22T22:17:42-04:00</lastmod>
   </url><url>
     <loc>https://cakrome.github.io/posts/</loc>
+    <lastmod>2024-09-22T22:17:42-04:00</lastmod>
+  </url><url>
+    <loc>https://cakrome.github.io/tags/proxmox/</loc>
+    <lastmod>2024-09-22T22:17:42-04:00</lastmod>
+  </url><url>
+    <loc>https://cakrome.github.io/tags/</loc>
+    <lastmod>2024-09-22T22:17:42-04:00</lastmod>
+  </url><url>
+    <loc>https://cakrome.github.io/tags/virtualization/</loc>
+    <lastmod>2024-09-22T22:17:42-04:00</lastmod>
+  </url><url>
+    <loc>https://cakrome.github.io/posts/my-first-post/</loc>
     <lastmod>2024-05-26T15:34:56-04:00</lastmod>
   </url><url>
     <loc>https://cakrome.github.io/categories/</loc>
@@ -16,7 +31,5 @@
     <loc>https://cakrome.github.io/projects/cpython-docker/</loc>
   </url><url>
     <loc>https://cakrome.github.io/projects/</loc>
-  </url><url>
-    <loc>https://cakrome.github.io/tags/</loc>
   </url>
 </urlset>

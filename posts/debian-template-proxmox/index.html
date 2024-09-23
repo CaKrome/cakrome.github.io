@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        :root {
+            --accent-color: #FF4D4D;
+        }
+    </style>
+
+    
+    
+    
+    
+    
+    
+
+    
+    <title>How to create a Debian VM Template in Proxmox VE with cloud-init support</title>
+    <meta name="description" content="Disclaimer: the instructions in this blog post is largely based on Techno Tim&rsquo;s video Perfect Proxmox Template with Cloud Image and Cloud Init with my own …">
+    <meta name="keywords" content='blog, gokarna, hugo, proxmox, devops, virtualization'>
+
+    <meta property="og:url" content="https://cakrome.github.io/posts/debian-template-proxmox/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="How to create a Debian VM Template in Proxmox VE with cloud-init support">
+    <meta property="og:description" content="Disclaimer: the instructions in this blog post is largely based on Techno Tim&rsquo;s video Perfect Proxmox Template with Cloud Image and Cloud Init with my own …">
+    <meta property="og:image" content="https://cakrome.github.io/images/avatar.webp">
+    <meta property="og:image:secure_url" content="https://cakrome.github.io/images/avatar.webp">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="How to create a Debian VM Template in Proxmox VE with cloud-init support">
+    <meta name="twitter:description" content="Disclaimer: the instructions in this blog post is largely based on Techno Tim&rsquo;s video Perfect Proxmox Template with Cloud Image and Cloud Init with my own …">
+    <meta property="twitter:domain" content="https://cakrome.github.io/posts/debian-template-proxmox/">
+    <meta property="twitter:url" content="https://cakrome.github.io/posts/debian-template-proxmox/">
+    <meta name="twitter:image" content="https://cakrome.github.io/images/avatar.webp">
+
+    
+    <link rel="canonical" href="https://cakrome.github.io/posts/debian-template-proxmox/">
+
+    
+    <link rel="stylesheet" type="text/css" href="/css/normalize.min.css" media="print">
+
+    
+    <link rel="stylesheet" type="text/css" href="/css/main.min.css">
+
+    
+    <link id="dark-theme" rel="stylesheet" href="/css/dark.min.css">
+
+    
+    <script src="/js/bundle.min.9a920d7dabdbad8363b6a0a94e29a9dfebdb7ee64cfcb193a0145e512ef2bdab.js" integrity="sha256-mpINfavbrYNjtqCpTimp3&#43;vbfuZM/LGToBReUS7yvas="></script>
+
+    
+    
+        <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css" integrity="sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js" integrity="sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+          // customised options
+          // • auto-render specific keys, e.g.:
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+          ],
+          // • rendering keys, e.g.:
+          throwOnError : false
+        });
+      });
+    </script>
+  
+    
+</head>
+<body>
+        <script>
+            
+            setThemeByUserPref();
+        </script><header class="header">
+    <nav class="header-nav">
+
+        
+        <div class="avatar">
+            <a href="https://cakrome.github.io/">
+                <img src='/images/avatar.webp' alt="avatar">
+            </a>
+        </div>
+        
+
+        <div class="nav-title">
+            <a class="nav-brand" href="https://cakrome.github.io/">CaKrome&#39;s personal site</a>
+        </div>
+
+        <div class="nav-links">
+            
+            <div class="nav-link">
+                <a href="https://cakrome.github.io/" ><span data-feather='home'></span> Home </a>
+            </div>
+            
+            <div class="nav-link">
+                <a href="https://cakrome.github.io/posts/" ><span data-feather='book'></span> Posts </a>
+            </div>
+            
+            <div class="nav-link">
+                <a href="https://cakrome.github.io/projects/" ><span data-feather='code'></span> Projects </a>
+            </div>
+            
+            <div class="nav-link">
+                <a href="https://cakrome.github.io/tags/" ><span data-feather='tag'></span> Tags </a>
+            </div>
+            
+            <div class="nav-link">
+                <a href="https://cakrome.github.io/index.xml" ><span data-feather='rss'></span>  </a>
+            </div>
+            
+
+            <span class="nav-icons-divider"></span>
+            <div class="nav-link dark-theme-toggle">
+                <span class="sr-only dark-theme-toggle-screen-reader-target"></span>
+                <a>
+                    <span class="theme-toggle-icon" data-feather="moon"></span>
+                </a>
+            </div>
+
+            <div class="nav-link" id="hamburger-menu-toggle">
+                <span class="sr-only hamburger-menu-toggle-screen-reader-target">menu</span>
+                <a>
+                    <span data-feather="menu"></span>
+                </a>
+            </div>
+
+            
+            <ul class="nav-hamburger-list visibility-hidden">
+                
+                <li class="nav-item">
+                    <a href="https://cakrome.github.io/" ><span data-feather='home'></span> Home </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="https://cakrome.github.io/posts/" ><span data-feather='book'></span> Posts </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="https://cakrome.github.io/projects/" ><span data-feather='code'></span> Projects </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="https://cakrome.github.io/tags/" ><span data-feather='tag'></span> Tags </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="https://cakrome.github.io/index.xml" ><span data-feather='rss'></span>  </a>
+                </li>
+                
+                <li class="nav-item dark-theme-toggle">
+                    <span class="sr-only dark-theme-toggle-screen-reader-target">theme</span>
+                    <a>
+                        <span class="theme-toggle-icon" data-feather="moon"></span>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+    </nav>
+</header>
+<main id="content">
+    <div class="post container">
+    <div class="post-header-section">
+        <h1>How to create a Debian VM Template in Proxmox VE with cloud-init support</h1>
+
+        
+
+        
+	
+	
+	
+	
+        
+
+	
+
+	
+
+	
+          <small role="doc-subtitle"></small>
+	
+
+	
+          <p class="post-date">September 22, 2024
+           
+          </p>
+	
+
+        <ul class="post-tags">
+          
+           
+             <li class="post-tag"><a href="https://cakrome.github.io/tags/proxmox">proxmox</a></li>
+           
+         
+           
+             <li class="post-tag"><a href="https://cakrome.github.io/tags/devops">devops</a></li>
+           
+         
+           
+             <li class="post-tag"><a href="https://cakrome.github.io/tags/virtualization">virtualization</a></li>
+           
+         
+        </ul>
+    </div>
+
+    <div class="post-content">
+        <p>Disclaimer: the instructions in this blog post is largely based on Techno Tim&rsquo;s video <a href="https://www.youtube.com/watch?v=shiIi38cJe4">Perfect Proxmox Template with Cloud Image and Cloud Init</a> with my own modifications.</p>
+<h2 id="why-using-templates-in-proxmox">Why using Templates in Proxmox?</h2>
+<p>For certain cases we need to spin up seveal VMs to achieve our task, building a distributed system like a <a href="https://kubernetes.io">Kubernetes</a> cluster, hosting a <a href="https://www.jenkins.io">Jenkins</a> CI/CD platform or processing data at scale with <a href="https://spark.apache.org">Apache Spark</a>. Without a template, we would need to install the operating systems as many times as the number of instances required, making it a hassle and sometimes impractical.</p>
+<p>VM template exists to solve this issue, we just need to build a minimal base VM, convert it to a template then we can just clone it as many times as we like. This greatly simplified the process of spining up multiple VM instances.</p>
+<h2 id="cloud-init">cloud-init</h2>
+<p><a href="https://cloud-init.io">cloud-init</a> is used to preconfigure the VM instances during it&rsquo;s startup. We will configure the username, password, SSH keys and network configuration using a cloud-image drive. The Debian cloud image we use in this post has cloud-init support included.</p>
+<h2 id="instructions">Instructions</h2>
+<h3 id="download-debian-cloud-image">Download Debian cloud image:</h3>
+<p>SSH into your Proxmox host, then head to <a href="https://cloud.debian.org/images/cloud/">Debian Official Cloud Images</a> and download the image, you can choose the version according to your need, I used the <code>generic</code> image here.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>wget https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-generic-amd64.qcow2 <span style="color:#f92672">&amp;&amp;</span> wget https://cloud.debian.org/images/cloud/bookworm/latest/SHA512SUMS
+</span></span></code></pre></div><h3 id="compare-the-checksum">Compare the checksum</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sha512sum -c SHA512SUMS 2&gt;&amp;<span style="color:#ae81ff">1</span> | grep OK
+</span></span></code></pre></div><p>If you see <code>debian-12-generic-amd64.qcow2: OK</code>, then the image is good to be used.</p>
+<h3 id="create-vm">Create VM</h3>
+<p>Now we can create a VM with this command(adjust accoding to your need)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>qm create <span style="color:#ae81ff">8000</span> --memory <span style="color:#ae81ff">1024</span> --cpu x86-64-v2-AES --cores <span style="color:#ae81ff">1</span> --name debian-cloud-template --net0 virtio,bridge<span style="color:#f92672">=</span>vmbr1
+</span></span></code></pre></div><p>I used <code>vmbr1</code> here as the bridge since I have a separated VLAN configured specifically for virtual machines. If you do not have a separate network for VMs you can just use <code>vmbr0</code>.</p>
+<h3 id="resize-image">Resize Image</h3>
+<p>We need to resize the image since the default size is too small for most use cases, I choose 32GB here.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>qemu-img resize debian-12-generic-amd64.qcow2 32G
+</span></span></code></pre></div><h3 id="import-image-into-proxmox">Import image into Proxmox</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>qm disk import <span style="color:#ae81ff">8000</span> debian-12-generic-amd64.qcow2 local-lvm
+</span></span></code></pre></div><p>Change <code>local-lvm</code> to your custom storage name if you have a separate VM Disks storage configured.</p>
+<h3 id="attach-the-disk-to-a-scsi-controller">Attach the disk to a SCSI controller</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>qm set <span style="color:#ae81ff">8000</span> --scsihw virtio-scsi-pci --scsi0 local-lvm:8000/vm-8000-disk-0.raw
+</span></span></code></pre></div><p>Change <code>local-lvm</code> to your custom storage if needed.</p>
+<h3 id="attach-a-cloud-init-drive">Attach a cloud-init drive</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>qm set <span style="color:#ae81ff">8000</span> --ide2 local-lvm:cloudinit
+</span></span></code></pre></div><p>Change <code>local-lvm</code> to your custom storage if needed.</p>
+<h3 id="make-the-vm-boot-from-disk-only">Make the VM boot from disk only</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>qm set <span style="color:#ae81ff">8000</span> --boot c --bootdisk scsi0
+</span></span></code></pre></div><h3 id="add-serial-console">Add serial console</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>qm set <span style="color:#ae81ff">8000</span> --serial0 socket --vga serial0
+</span></span></code></pre></div><h3 id="set-os-type">Set OS Type</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>qm set <span style="color:#ae81ff">8000</span> --ostype l26
+</span></span></code></pre></div><h3 id="enable-start-at-boot">Enable start at boot</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>qm set <span style="color:#ae81ff">8000</span> --onboot <span style="color:#ae81ff">1</span>
+</span></span></code></pre></div><h3 id="enable-qemu-guest-agent">Enable QEMU Guest Agent</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>qm set <span style="color:#ae81ff">8000</span> --agent enabled<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+</span></span></code></pre></div><p>Note: We still need to install the <code>qemu-guest-agent</code> package in the cloned VM later.</p>
+<h3 id="configure-cloud-init">Configure cloud-init</h3>
+<p>Now head to your Promox web interface, select the VM we created, and click <code>Cloud-Init</code> on the right side, we see the cloud-init configuration interface:</p>
+<p><img src="/images/debian-template-proxmox/pve-cloud-init-interface.png" alt="PVE cloud-init Interface" title="PVE cloud-init Interface"></p>
+<p>We can configure user, password, DNS, SSH key, upgrade packages and network, after filling in those configurations, click <code>Regenerate Image</code> to regenerate cloud-init image.</p>
+<h3 id="create-template">Create template</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>qm template <span style="color:#ae81ff">8000</span>
+</span></span></code></pre></div><p>Note: This is a one way process, after this command is done, we cannot convert this template back to a regular VM.</p>
+<h3 id="create-vm-from-template">Create VM from template</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>qm clone <span style="color:#ae81ff">8000</span> <span style="color:#ae81ff">135</span> --name debian-vm-1 --full --storage local-lvm --format qcow2
+</span></span></code></pre></div><p>Now we cloned our first VM from the template we just created! And this is all you need to create a VM from a template!</p>
+<h3 id="miscellaneous">Miscellaneous</h3>
+<p>If you accidentally started the VM before you reach the <a href="#create-template">Create template</a> section, there are ways to reset the <code>machine-id</code>. However I recommend just restarting from scratch since it would be more straightforward.</p>
+<h3 id="future-work">Future work</h3>
+<ul>
+<li>Consolidate the steps in this post into a script.</li>
+<li>Investigate how to boot with UEFI.</li>
+<li>Customize the cloud-init config beyond the options provided by Proxmox web interface.</li>
+</ul>
+
+        
+    </div>
+
+    <div class="prev-next">
+        
+    </div>
+
+    
+    
+        <svg id="btt-button" class="arrow-logo" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512" onclick="scrollToTop()" title="Go to top">
+    
+    <path d="M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z"/>
+</svg>
+<script>
+    let backToTopButton = document.getElementById("btt-button");
+
+    window.onscroll = function() {
+        scrollFunction()
+    };
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            backToTopButton.style.display = "block";
+        } else {
+            backToTopButton.style.display = "none";
+        }
+    }
+
+    function scrollToTop() {
+        window.scrollTo(0, 0);
+    }
+</script>
+
+    
+    
+</div>
+
+
+
+    
+
+        </main><footer class="footer">
+    
+    
+
+    
+    <span>&copy; 2024 CaKrome</span>
+    
+    <span>
+        Made with &#10084;&#65039; using <a target="_blank" href="https://github.com/526avijitgupta/gokarna">Gokarna</a>
+    </span>
+</footer>
+</body>
+</html>
