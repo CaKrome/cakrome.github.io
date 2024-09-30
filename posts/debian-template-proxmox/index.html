@@ -17,19 +17,19 @@
     
 
     
-    <title>How to create a Debian VM Template in Proxmox VE with cloud-init support</title>
+    <title>How to create a Debian VM template in Proxmox VE with cloud-init support</title>
     <meta name="description" content="Disclaimer: the instructions in this blog post is largely based on Techno Tim&rsquo;s video Perfect Proxmox Template with Cloud Image and Cloud Init with my own …">
     <meta name="keywords" content='blog, gokarna, hugo, proxmox, devops, virtualization'>
 
     <meta property="og:url" content="https://cakrome.github.io/posts/debian-template-proxmox/">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="How to create a Debian VM Template in Proxmox VE with cloud-init support">
+    <meta property="og:title" content="How to create a Debian VM template in Proxmox VE with cloud-init support">
     <meta property="og:description" content="Disclaimer: the instructions in this blog post is largely based on Techno Tim&rsquo;s video Perfect Proxmox Template with Cloud Image and Cloud Init with my own …">
     <meta property="og:image" content="https://cakrome.github.io/images/avatar.webp">
     <meta property="og:image:secure_url" content="https://cakrome.github.io/images/avatar.webp">
 
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="How to create a Debian VM Template in Proxmox VE with cloud-init support">
+    <meta name="twitter:title" content="How to create a Debian VM template in Proxmox VE with cloud-init support">
     <meta name="twitter:description" content="Disclaimer: the instructions in this blog post is largely based on Techno Tim&rsquo;s video Perfect Proxmox Template with Cloud Image and Cloud Init with my own …">
     <meta property="twitter:domain" content="https://cakrome.github.io/posts/debian-template-proxmox/">
     <meta property="twitter:url" content="https://cakrome.github.io/posts/debian-template-proxmox/">
@@ -167,7 +167,7 @@
 <main id="content">
     <div class="post container">
     <div class="post-header-section">
-        <h1>How to create a Debian VM Template in Proxmox VE with cloud-init support</h1>
+        <h1>How to create a Debian VM template in Proxmox VE with cloud-init support</h1>
 
         
 
@@ -211,13 +211,13 @@
 
     <div class="post-content">
         <p>Disclaimer: the instructions in this blog post is largely based on Techno Tim&rsquo;s video <a href="https://www.youtube.com/watch?v=shiIi38cJe4">Perfect Proxmox Template with Cloud Image and Cloud Init</a> with my own modifications.</p>
-<h2 id="why-using-templates-in-proxmox">Why using Templates in Proxmox?</h2>
+<h2 id="why-using-templates-in-proxmox">Why using templates in Proxmox</h2>
 <p>For certain cases we need to spin up seveal VMs to achieve our task, building a distributed system like a <a href="https://kubernetes.io">Kubernetes</a> cluster, hosting a <a href="https://www.jenkins.io">Jenkins</a> CI/CD platform or processing data at scale with <a href="https://spark.apache.org">Apache Spark</a>. Without a template, we would need to install the operating systems as many times as the number of instances required, making it a hassle and sometimes impractical.</p>
 <p>VM template exists to solve this issue, we just need to build a minimal base VM, convert it to a template then we can just clone it as many times as we like. This greatly simplified the process of spining up multiple VM instances.</p>
 <h2 id="cloud-init">cloud-init</h2>
 <p><a href="https://cloud-init.io">cloud-init</a> is used to preconfigure the VM instances during it&rsquo;s startup. We will configure the username, password, SSH keys and network configuration using a cloud-image drive. The Debian cloud image we use in this post has cloud-init support included.</p>
 <h2 id="instructions">Instructions</h2>
-<h3 id="download-debian-cloud-image">Download Debian cloud image:</h3>
+<h3 id="download-debian-cloud-image">Download Debian cloud image</h3>
 <p>SSH into your Proxmox host, then head to <a href="https://cloud.debian.org/images/cloud/">Debian Official Cloud Images</a> and download the image, you can choose the version according to your need, I used the <code>generic</code> image here.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>wget https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-generic-amd64.qcow2 <span style="color:#f92672">&amp;&amp;</span> wget https://cloud.debian.org/images/cloud/bookworm/latest/SHA512SUMS
 </span></span></code></pre></div><h3 id="compare-the-checksum">Compare the checksum</h3>
@@ -227,7 +227,7 @@
 <p>Now we can create a VM with this command(adjust accoding to your need)</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>qm create <span style="color:#ae81ff">8000</span> --memory <span style="color:#ae81ff">1024</span> --cpu x86-64-v2-AES --cores <span style="color:#ae81ff">1</span> --name debian-cloud-template --net0 virtio,bridge<span style="color:#f92672">=</span>vmbr1
 </span></span></code></pre></div><p>I used <code>vmbr1</code> here as the bridge since I have a separated VLAN configured specifically for virtual machines. If you do not have a separate network for VMs you can just use <code>vmbr0</code>.</p>
-<h3 id="resize-image">Resize Image</h3>
+<h3 id="resize-image">Resize image</h3>
 <p>We need to resize the image since the default size is too small for most use cases, I choose 32GB here.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>qemu-img resize debian-12-generic-amd64.qcow2 32G
 </span></span></code></pre></div><h3 id="import-image-into-proxmox">Import image into Proxmox</h3>
@@ -243,7 +243,7 @@
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>qm set <span style="color:#ae81ff">8000</span> --boot c --bootdisk scsi0
 </span></span></code></pre></div><h3 id="add-serial-console">Add serial console</h3>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>qm set <span style="color:#ae81ff">8000</span> --serial0 socket --vga serial0
-</span></span></code></pre></div><h3 id="set-os-type">Set OS Type</h3>
+</span></span></code></pre></div><h3 id="set-os-type">Set OS type</h3>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>qm set <span style="color:#ae81ff">8000</span> --ostype l26
 </span></span></code></pre></div><h3 id="enable-start-at-boot">Enable start at boot</h3>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>qm set <span style="color:#ae81ff">8000</span> --onboot <span style="color:#ae81ff">1</span>

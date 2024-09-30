@@ -9,11 +9,11 @@
     <lastBuildDate>Sun, 22 Sep 2024 22:17:42 -0400</lastBuildDate>
     <atom:link href="https://cakrome.github.io/tags/proxmox/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>How to create a Debian VM Template in Proxmox VE with cloud-init support</title>
+      <title>How to create a Debian VM template in Proxmox VE with cloud-init support</title>
       <link>https://cakrome.github.io/posts/debian-template-proxmox/</link>
       <pubDate>Sun, 22 Sep 2024 22:17:42 -0400</pubDate>
       <guid>https://cakrome.github.io/posts/debian-template-proxmox/</guid>
-      <description>&lt;p&gt;Disclaimer: the instructions in this blog post is largely based on Techno Tim&amp;rsquo;s video &lt;a href=&#34;https://www.youtube.com/watch?v=shiIi38cJe4&#34;&gt;Perfect Proxmox Template with Cloud Image and Cloud Init&lt;/a&gt; with my own modifications.&lt;/p&gt;&#xA;&lt;h2 id=&#34;why-using-templates-in-proxmox&#34;&gt;Why using Templates in Proxmox?&lt;/h2&gt;&#xA;&lt;p&gt;For certain cases we need to spin up seveal VMs to achieve our task, building a distributed system like a &lt;a href=&#34;https://kubernetes.io&#34;&gt;Kubernetes&lt;/a&gt; cluster, hosting a &lt;a href=&#34;https://www.jenkins.io&#34;&gt;Jenkins&lt;/a&gt; CI/CD platform or processing data at scale with &lt;a href=&#34;https://spark.apache.org&#34;&gt;Apache Spark&lt;/a&gt;. Without a template, we would need to install the operating systems as many times as the number of instances required, making it a hassle and sometimes impractical.&lt;/p&gt;</description>
+      <description>&lt;p&gt;Disclaimer: the instructions in this blog post is largely based on Techno Tim&amp;rsquo;s video &lt;a href=&#34;https://www.youtube.com/watch?v=shiIi38cJe4&#34;&gt;Perfect Proxmox Template with Cloud Image and Cloud Init&lt;/a&gt; with my own modifications.&lt;/p&gt;&#xA;&lt;h2 id=&#34;why-using-templates-in-proxmox&#34;&gt;Why using templates in Proxmox&lt;/h2&gt;&#xA;&lt;p&gt;For certain cases we need to spin up seveal VMs to achieve our task, building a distributed system like a &lt;a href=&#34;https://kubernetes.io&#34;&gt;Kubernetes&lt;/a&gt; cluster, hosting a &lt;a href=&#34;https://www.jenkins.io&#34;&gt;Jenkins&lt;/a&gt; CI/CD platform or processing data at scale with &lt;a href=&#34;https://spark.apache.org&#34;&gt;Apache Spark&lt;/a&gt;. Without a template, we would need to install the operating systems as many times as the number of instances required, making it a hassle and sometimes impractical.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
